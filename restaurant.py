@@ -24,6 +24,9 @@ class Restaurant():
         df = pd.DataFrame(restaurant_data)
         return df
     
+    def fill_empty_values(self):
+        self.restaurant_data = self.restaurant_data.fillna('NA')
+                                        
 
 
     
@@ -32,4 +35,6 @@ if __name__ == "__main__":
     restaurant_data = 'Data/restaurant_data.json'
     country_code = 'Data/Country-Code.xlsx'
     restaurant = Restaurant(restaurant_data, country_code)
-    # restaurant.restaurant_data.to_csv('restaurant_data.csv', index=False)
+    restaurant.fill_empty_values()
+    # restaurant.restaurant_data.to_csv('restaurant_data2.csv', index=False)
+    print(restaurant.restaurant_data[restaurant.restaurant_data.isna().any(axis=1)])
