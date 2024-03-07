@@ -25,7 +25,18 @@ class Restaurant():
         return df
     
     def fill_empty_values(self):
+        self.restaurant_data = self.restaurant_data.replace('', 'NA')
         self.restaurant_data = self.restaurant_data.fillna('NA')
+
+    def extract_location(self):
+        # extract keys and create individual columns
+        loc_columns = list(self.restaurant_data.loc[0, 'location'].keys())
+        for key in loc_columns:
+            self.restaurant_data[key] = self.restaurant_data['location'].apply(lambda x: x.get(key, 'NA'))
+        # drop location column
+        self.restaurant_data.drop('location', axis=1, inplace=True)
+
+
                                         
 
 
@@ -35,6 +46,7 @@ if __name__ == "__main__":
     restaurant_data = 'Data/restaurant_data.json'
     country_code = 'Data/Country-Code.xlsx'
     restaurant = Restaurant(restaurant_data, country_code)
+    restaurant.extract_location()
     restaurant.fill_empty_values()
-    # restaurant.restaurant_data.to_csv('restaurant_data2.csv', index=False)
-    print(restaurant.restaurant_data[restaurant.restaurant_data.isna().any(axis=1)])
+    restaurant.restaurant_data.to_csv('restaurant_data2.csv', index=False)
+
