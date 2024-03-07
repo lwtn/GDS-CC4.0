@@ -46,6 +46,16 @@ class Restaurant():
         right_key_col = 'Country Code'
         self.restaurant_data = pd.merge(self.restaurant_data, self.country_code, left_on = left_key_col, right_on = right_key_col, how='left')
 
+    def get_restaurants(self):
+        fields = ['id', 'name', 'Country', 'city', 'votes', 'aggregate_rating', 'cuisines']
+        data_type = {'id': 'int32', 'name': 'str', 'Country': 'str', 'city': 'str', 'votes': 'int32', 'aggregate_rating': 'float32', 'cuisines': 'str'}
+        col_names = {'id': 'Restaurant Id', 'name': 'Restaurant Name', 'Country': 'Country', 'city': 'City', 'votes': 'User Rating Votes', 'aggregate_rating': 'User Aggregate Rating', 'cuisines': 'Cuisines'}
+
+        self.restaurants = self.restaurant_data[fields].astype(data_type)
+        self.restaurants.rename(columns=col_names, inplace=True)
+
+        self.restaurants.to_csv('restaurants.csv', index=False)
+
 
 
 
@@ -62,6 +72,7 @@ if __name__ == "__main__":
     restaurant.get_country()
     restaurant.extract_ratings()
     restaurant.fill_empty_values()
-    restaurant.restaurant_data.to_csv('restaurant_data2.csv', index=False)
+    restaurant.get_restaurants()
+    # restaurant.restaurant_data.to_csv('restaurant_data2.csv', index=False)
 
 
