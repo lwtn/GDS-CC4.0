@@ -1,6 +1,7 @@
 import json
 import pandas as pd
 from pandas import json_normalize
+import numpy as np
 
 class Restaurant():
     def __init__(self, restaurant_data, country_code):
@@ -58,6 +59,21 @@ class Restaurant():
 
 
 
+    def rating_threshold(self):
+        ratings = self.restaurant_data[['aggregate_rating', 'rating_text']]
+        text_ratings = ['Excellent', 'Very Good', 'Good', 'Average', 'Poor']
+        self.ratings = ratings[ratings['rating_text'].isin(text_ratings)]
+        threshold = self.ratings.groupby('rating_text')['aggregate_rating'].agg(['min', 'max'])
+        threshold = threshold.apply(lambda x: x.reindex(text_ratings))
+
+        # change max and min values for ratings
+        threshold.loc['Excellent', 'max'] = 5.0
+        threshold.loc['Poor', 'min'] = 0.0
+
+        # ensure ratings are in a continous range 
+        threshold.loc['Poor', 'max'] = str(float(threshold.loc['Average', 'min']) - 0.1)
+        self.threshold = threshold
+
 
                                         
 
@@ -72,7 +88,9 @@ if __name__ == "__main__":
     restaurant.get_country()
     restaurant.extract_ratings()
     restaurant.fill_empty_values()
-    restaurant.get_restaurants()
+    # restaurant.extract_events()
+    restaurant.rating_threshold()
+    # restaurant.get_restaurants()
     # restaurant.restaurant_data.to_csv('restaurant_data2.csv', index=False)
 
 
