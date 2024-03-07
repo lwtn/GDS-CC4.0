@@ -163,9 +163,9 @@ class Restaurant():
         self.extract_ratings()
         self.get_country()
         self.fill_empty_values()
-        self.get_events()
-        self.get_restaurants()
-        self.rating_threshold()
+        self.get_restaurants()      # task 1
+        self.get_events()           # task 2
+        self.rating_threshold()     # task 3
 
 
 if __name__ == "__main__":
