@@ -41,6 +41,12 @@ class Restaurant():
             # print(key)
             self.restaurant_data[key] = self.restaurant_data['user_rating'].apply(lambda x: x.get(key, 'NA'))
 
+    def get_country(self):
+        left_key_col = 'country_id'
+        right_key_col = 'Country Code'
+        self.restaurant_data = pd.merge(self.restaurant_data, self.country_code, left_on = left_key_col, right_on = right_key_col, how='left')
+
+
 
 
                                         
@@ -53,8 +59,9 @@ if __name__ == "__main__":
     country_code = 'Data/Country-Code.xlsx'
     restaurant = Restaurant(restaurant_data, country_code)
     restaurant.extract_location()
+    restaurant.get_country()
     restaurant.extract_ratings()
     restaurant.fill_empty_values()
-    # restaurant.restaurant_data.to_csv('restaurant_data2.csv', index=False)
+    restaurant.restaurant_data.to_csv('restaurant_data2.csv', index=False)
 
 
