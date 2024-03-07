@@ -33,8 +33,14 @@ class Restaurant():
         loc_columns = list(self.restaurant_data.loc[0, 'location'].keys())
         for key in loc_columns:
             self.restaurant_data[key] = self.restaurant_data['location'].apply(lambda x: x.get(key, 'NA'))
-        # drop location column
-        self.restaurant_data.drop('location', axis=1, inplace=True)
+
+    def extract_ratings(self):
+        # extract keys and create individual columns
+        rating_columns = list(self.restaurant_data.loc[0, 'user_rating'].keys())
+        for key in rating_columns:
+            # print(key)
+            self.restaurant_data[key] = self.restaurant_data['user_rating'].apply(lambda x: x.get(key, 'NA'))
+
 
 
                                         
@@ -47,6 +53,8 @@ if __name__ == "__main__":
     country_code = 'Data/Country-Code.xlsx'
     restaurant = Restaurant(restaurant_data, country_code)
     restaurant.extract_location()
+    restaurant.extract_ratings()
     restaurant.fill_empty_values()
-    restaurant.restaurant_data.to_csv('restaurant_data2.csv', index=False)
+    # restaurant.restaurant_data.to_csv('restaurant_data2.csv', index=False)
+
 
