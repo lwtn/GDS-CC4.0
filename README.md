@@ -54,7 +54,7 @@ git clone https://github.com/lwtn/GDS-CC4.0.git
 3. Run restaurant.py
 
 ## Assumptions
-1. Ratings are in the range of [1,5]
+1. Ratings are in the range of [0,5]
 
 
 
